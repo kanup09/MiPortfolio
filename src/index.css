@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #0D1117;
+  --color-surface: #161B22;
+  --color-text: #E6EDF3;
+  --color-muted: #8B949E;
+  --color-primary: #58A6FF;
+  --color-success: #3FB950;
+  --color-danger: #F85149;
+
+  --font-heading: "Space Grotesk", sans-serif;
+  --font-body: Inter, sans-serif;
+}
+
+body {
+  @apply bg-bg text-text font-body;
+}
