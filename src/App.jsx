@@ -4,6 +4,8 @@ import './App.css'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import Stack from './components/Stack'
+import Servicios from './components/Servicios'
+
 
 function App() {
   
@@ -13,6 +15,7 @@ function App() {
       <Navbar/>
       <Hero/>
       <Stack/>
+      <Servicios/>
 
     </>
   )
