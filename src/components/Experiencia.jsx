@@ -1,3 +1,4 @@
+
 const proyectos = [
   { nombre: "Calculadora de Métodos Numéricos", descripcion: "App colaborativa para resolver métodos numéricos.", link: "https://github.com/..." },
   { nombre: "Visualizador de Algoritmos", descripcion: "Portfolio interactivo de algoritmos de ordenamiento.", link: "https://github.com/..." },
@@ -9,7 +10,8 @@ function CardExp({ titulo, descripcion, link }) {
         href={link}
         target="_blank"
         rel="noopener noreferrer"
-        className="block bg-surface p-4 rounded-lg text-center border border-surface hover:border-primary transition-colors"
+        // Agregamos w-full y max-w-sm para controlar el ancho
+        className="block w-full max-w-sm bg-surface p-6 rounded-lg text-center border border-surface hover:border-primary transition-colors"
     >
         <h3 className="font-heading text-xl font-bold text-primary mb-2">
             {titulo}
@@ -20,7 +22,6 @@ function CardExp({ titulo, descripcion, link }) {
 }
 
 function Experiencia(){
-
     return(
         <section id="experiencia" className="py-10 px-6">
             <div className="max-w-5xl mx-auto text-center">
@@ -29,12 +30,14 @@ function Experiencia(){
                     Experiencia 
                 </h2>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {/* Cambiamos grid por flexbox centrado */}
+                <div className="flex flex-col md:flex-row justify-center items-center md:items-stretch gap-6">
                     {proyectos.map((proyecto) => (
                         <CardExp
                             key={proyecto.nombre}
                             titulo={proyecto.nombre}
                             descripcion={proyecto.descripcion}
+                            link={proyecto.link}
                         />
                     ))}
                 </div>
