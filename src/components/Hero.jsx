@@ -3,7 +3,7 @@ function Hero(){
 
     // "flex justify-center items-center" Centra los items de manera horizontal y vertical
     return(
-        <section id="hero" className="mt-24 p-4 flex justify-center items-center min-h-screen">
+        <section id="hero" className="mt-2 p-4 flex justify-center items-center min-h-screen">
            
             <div className="max-w-3xl text-center">
 
