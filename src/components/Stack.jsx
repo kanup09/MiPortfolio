@@ -22,7 +22,7 @@ function Stack(){
                 {tecnologias.map((tecno)=>{
                     const Icono = tecno.icono
                     return(
-                    <div key={tecno.nombre} className="bg-surface text-muted p-2 block rounded-lg md:rounded-lg text-center border border-white/10">
+                    <div key={tecno.nombre} className="bg-surface text-muted p-2 block rounded-lg text-center border border-white/10">
                         <Icono className="text-3xl text-primary mb-2 mx-auto" />
                         <p>{tecno.nombre}</p>
                     </div>
