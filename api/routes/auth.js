@@ -2,6 +2,7 @@ import { Router } from "express";
 import bcrypt from "bcrypt";
 import pool from "../baseDatos.js"; 
 import jwt from "jsonwebtoken"; 
+import { verificarToken } from "../middleware/verificarToken.js";
 
 const router = Router();
 
@@ -63,10 +64,18 @@ router.post("/login", async(req, res)=>{
       usuario: { id: usuario.id, 
         nombre: usuario.nombre, 
         rol: usuario.rol } })
+        
+    router.get("/perfil", verificarToken, (req, res)=>{
+      res.json({mensaje: "Accediste con exito", usuario: req.usuario})
+    });
 
+
+
+    
   }catch(error){
     res.status(500).json({ error: error.message });
   }
 });
+
 
 export default router;
