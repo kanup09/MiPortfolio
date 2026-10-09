@@ -65,17 +65,13 @@ router.post("/login", async(req, res)=>{
         nombre: usuario.nombre, 
         rol: usuario.rol } })
         
-    router.get("/perfil", verificarToken, (req, res)=>{
-      res.json({mensaje: "Accediste con exito", usuario: req.usuario})
+      }catch(error){
+        res.status(500).json({ error: error.message });
+      }
     });
-
-
-
     
-  }catch(error){
-    res.status(500).json({ error: error.message });
-  }
+router.get("/perfil", verificarToken, (req, res)=>{
+  res.json({mensaje: "Accediste con exito", usuario: req.usuario})
 });
-
 
 export default router;
