@@ -1,6 +1,6 @@
 import { Router } from "express";
-import bcrypt from "bcrypt";
 import pool from "../baseDatos.js"; 
+import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken"; 
 import { verificarToken } from "../middleware/verificarToken.js";
 

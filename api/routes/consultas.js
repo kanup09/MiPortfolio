@@ -45,11 +45,13 @@ router.post("/consultas", async(req, res)=>{
 
 // Ruta GET /api/consultas (Para el panel de operador más adelante)
 router.get("/consultas", async (req, res) => {
+    
   try {
-    const [rows] = await pool.query(
+    const [consultas] = await pool.query(
       "SELECT * FROM consultas ORDER BY creado_en DESC"
     );
-    return res.json(rows);
+    return res.json(consultas);
+
   } catch (error) {
     console.error("Error al obtener las consultas:", error);
     return res.status(500).json({ error: "Error interno del servidor." });
