@@ -6,14 +6,20 @@ import cors from "cors";
 import pool from "./baseDatos.js";
 import authRoutes from "./routes/auth.js";
 import consultasRoutes from "./routes/consultas.js";
-
+import proyectos from "./routes/proyectos.js"
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
+
+// Autenticaciones
+
 app.use("/api", authRoutes);
 app.use("/api", consultasRoutes);
+app.use("/api", proyectos);
+
+
 
 app.get("/health", async (req, res) => {
   try {
