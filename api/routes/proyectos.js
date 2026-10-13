@@ -1,7 +1,7 @@
 import { Router } from "express";
 import pool from "../baseDatos.js"; 
 import { verificarToken } from "../middleware/verificarToken.js";
-
+import { proyectoSchema } from "../schemas/proyectoSchema.js";
 
 const router = Router();
 
@@ -22,18 +22,20 @@ router.get("/proyectos", verificarToken, async (req, res) =>{
 
 router.post("/proyectos", verificarToken, async(req, res)=>{
     try{
-        const{titulo , descripcion, imagen_url, link} = req.body;
+        const resultado = proyectoSchema.safeParse(req.body);
 
-        if(!titulo){
-            return res.status(400).json({ error: "El título es obligatorio." });
+        if (!resultado.success) {
+            return res.status(400).json({ error: resultado.error.issues });
         }
 
-        const[resultado] = await pool.query(
+        const{titulo , descripcion, imagen_url, link} = resultado.data;
+
+        const[proyecto] = await pool.query(
             "INSERT INTO proyectos (titulo, descripcion, imagen_url, link) VALUES (?, ?, ?, ?)",
             [titulo, descripcion, imagen_url, link]
         );
 
-        return res.status(201).json({ id: resultado.insertId, titulo });
+        return res.status(201).json({ id: proyecto.insertId, titulo });
     
     } catch (error) {
 
