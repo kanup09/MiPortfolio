@@ -3,28 +3,31 @@ import pool from "../baseDatos.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken"; 
 import { verificarToken } from "../middleware/verificarToken.js";
+import { registroSchema } from "../schemas/authSchemas.js";
 
 const router = Router();
 
 router.post("/registro", async (req, res) => {
   try {
-    const { nombre, email, password } = req.body;
+    const resultado = registroSchema.safeParse(req.body);
 
-    // Por ahora, validación simple (después la mejoramos con Zod)
-    if (!nombre || !email || !password) {
-      return res.status(400).json({ error: "Faltan campos obligatorios" });
+    if (!resultado.success) {
+      return res.status(400).json({ error: resultado.error.issues });
     }
+
+    const { nombre, email, password } = resultado.data;
+
 
     // Encriptar la contraseña
     const passwordHash = await bcrypt.hash(password, 10);
 
     // Guardar en la base
-    const [resultado] = await pool.query(
+    const [registro] = await pool.query(
       "INSERT INTO usuarios (nombre, email, password_hash) VALUES (?, ?, ?)",
       [nombre, email, passwordHash]
     );
 
-    res.status(201).json({ id: resultado.insertId, nombre, email });
+    res.status(201).json({ id: registro.insertId, nombre, email });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
