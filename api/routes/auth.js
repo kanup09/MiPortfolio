@@ -3,7 +3,7 @@ import pool from "../baseDatos.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken"; 
 import { verificarToken } from "../middleware/verificarToken.js";
-import { registroSchema } from "../schemas/authSchemas.js";
+import { loginSchema, registroSchema } from "../schemas/authSchemas.js";
 
 const router = Router();
 
@@ -35,43 +35,51 @@ router.post("/registro", async (req, res) => {
 
 router.post("/login", async(req, res)=>{
   try{
-    const{email, password} = req.body
+    const resultado = loginSchema.safeParse(req.body);
 
-    if(!email || !password){
-      return res.status(400).json({error: "Faltan campos obligatorios"})
+    if (!resultado.success) {
+      return res.status(400).json({ error: resultado.error.issues });
     }
-
-    const[filas] = await pool.query(
+    const { email, password } = resultado.data;
+    
+    // Buscar si el email existe
+    const [filas] = await pool.query(
       "SELECT * FROM usuarios WHERE email = ?", [email]
     )
 
     if( filas.length === 0 ){
       return res.status(401).json({error: "Credenciales inválidas"})
     }
-    
-    const coincide = await bcrypt.compare(password, filas[0].password_hash)
-    
-    if(!coincide){
-      return res.status(401).json({error: "Credenciales inválidas"})
-    }
 
     const usuario = filas[0];
+
+    // Comparar la contraseña con bcrypt
+    const coincide = await bcrypt.compare(password, usuario.password_hash);
     
+    if(!coincide){
+      return res.status(401).json({error: "Credenciales inválidas"});
+    }
+    
+    // si la contraseña coincide, generamos el token
     const token = jwt.sign(
       { id: usuario.id, rol: usuario.rol },
       process.env.JWT_SECRET,
       { expiresIn: "2h" }
     );
 
-    res.json({ token, 
-      usuario: { id: usuario.id, 
+    res.json({ 
+      token, 
+      usuario: { 
+        id: usuario.id, 
         nombre: usuario.nombre, 
-        rol: usuario.rol } })
+        rol: usuario.rol 
+      } 
+    })
         
-      }catch(error){
-        res.status(500).json({ error: error.message });
-      }
-    });
+  }catch(error){
+    res.status(500).json({ error: error.message });
+  }
+});
     
 router.get("/perfil", verificarToken, (req, res)=>{
   res.json({mensaje: "Accediste con exito", usuario: req.usuario})
