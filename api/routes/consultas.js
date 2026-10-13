@@ -1,6 +1,7 @@
 import { Router } from "express";
 import pool from "../baseDatos.js"; 
 import transporter from "../mailer.js";
+import { consultaSchema } from "../schemas/consultaSchema.js";
 
  
 
@@ -9,20 +10,20 @@ const router = Router();
 // Ruta POST /api/consultas (Guardar y enviar email)
 router.post("/consultas", async(req, res)=>{
     try{
-        const {nombre, email, tipo, mensaje} = req.body;
+        const resultado = consultaSchema.safeParse(req.body);
 
-       // 1. Validar que no falten campos
-        if (!nombre || !email || !tipo || !mensaje) {
-            return res.status(400).json({ error: "Todos los campos son obligatorios." });
-        }
+    if (!resultado.success) {
+        return res.status(400).json({ error: resultado.error.issues });
+    }
+        const {nombre, email, tipo, mensaje} =  resultado.data;
 
         // 2. Guardar en la base de datos
-        const [result] = await pool.query(
+        const [consulta] = await pool.query(
             "INSERT INTO consultas (nombre, email, tipo, mensaje) VALUES (?, ?, ?, ?)",
             [nombre, email, tipo, mensaje]
         );
 
-        const consultaId = result.insertId;
+        const consultaId = consulta.insertId;
 
         // 3. Enviar el correo usando Nodemailer
         await transporter.sendMail({
