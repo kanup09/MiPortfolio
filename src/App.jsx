@@ -1,25 +1,20 @@
-import { useState } from 'react'
-
-import './App.css'
-import Navbar from './components/Navbar'
-import Hero from './components/Hero'
-import Stack from './components/Stack'
-import Servicios from './components/Servicios'
-import Experiencia from './components/Experiencia'
+import { Routes, Route } from 'react-router-dom';
+import './App.css';
+import Navbar from './components/Navbar';
+import Home from './pages/Home';
+import Login from './pages/Login';
 
 function App() {
-  
   return (
     <>
-
-      <Navbar/>
-      <Hero/>
-      <Stack/>
-      <Servicios/>
-      <Experiencia/>
-
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="*" element={<h1>404</h1>} />
+      </Routes>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
