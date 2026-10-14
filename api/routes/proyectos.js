@@ -25,7 +25,7 @@ router.post("/proyectos", verificarToken, async(req, res)=>{
         const resultado = proyectoSchema.safeParse(req.body);
 
         if (!resultado.success) {
-            return res.status(400).json({ error: resultado.error.issues });
+            return res.status(400).json({ error: "Datos Invalidos" });
         }
 
         const{titulo , descripcion, imagen_url, link} = resultado.data;

@@ -13,7 +13,7 @@ router.post("/consultas", async(req, res)=>{
         const resultado = consultaSchema.safeParse(req.body);
 
     if (!resultado.success) {
-        return res.status(400).json({ error: resultado.error.issues });
+        return res.status(400).json({ error: "Datos Invalidos" });
     }
         const {nombre, email, tipo, mensaje} =  resultado.data;
 
