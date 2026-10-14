@@ -30,7 +30,7 @@ function Login() {
     setErrores({});
     setApiError('');
 
-    const resultado = loginSchema.safeParse({ email, password });
+    const resultado = loginSchema.safeParse(resultado.data);
 
     if (!resultado.success) {
       const erroresFormateados = {};
