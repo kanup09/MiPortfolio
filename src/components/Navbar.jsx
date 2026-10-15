@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 const links = [
   { label: "Inicio", href: "#hero" },
   { label: "Stack", href: "#stack" },
@@ -32,12 +33,12 @@ function NavLink({ href, children }) {
 // 3. Subcomponente para el botón de acción
 function NavButton({ children, onClick }) {
   return (
-    <button
-      onClick={onClick}
+    <Link
+      to={"/login"}
       className="px-4 py-2 rounded-lg bg-primary text-bg font-medium hover:opacity-90 transition-opacity"
     >
       {children}
-    </button>
+    </Link>
   );
 }
 
