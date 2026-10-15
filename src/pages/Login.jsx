@@ -1,18 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { z } from 'zod';
+import { loginSchema } from '../schemas/loginSchema';
 
-//  .trim() para limpiar espacios y sintaxis moderna
-const loginSchema = z.object({
-  email: z
-    .string()
-    .trim()
-    .min(1, { message: "El email es obligatorio" })
-    .email({ message: "El formato del email no es válido" }),
-  password: z
-    .string()
-    .min(1, { message: "La contraseña no puede estar vacía" })
-});
 
 function Login() {
   // Inicializamos useNavigate al principio del componente
